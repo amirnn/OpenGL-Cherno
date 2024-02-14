@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.15)
-project(opengl-cherno CXX)
+project(opengl-cherno LANGUAGES C CXX)
 
 
 

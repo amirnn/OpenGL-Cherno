@@ -1,0 +1,4 @@
+[submodule "conan/external/glad"]
+	path = conan/external/glad
+	url = https://github.com/Dav1dde/glad
+	branch = glad2
