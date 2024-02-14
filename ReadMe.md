@@ -3,21 +3,24 @@
 ## How to build
 
 To build run the command below
+
 ```shell
 # For Debug
-conan install . --build=missing --profile=profiles/brew-llvm -s build_type=Debug
+conan install . --build=missing --profile=profiles/<platform></platform>/<profile> -s build_type=Debug
 # or for Release
-conan install . --build=missing --profile=profiles/brew-llvm -s build_type=Release
+conan install . --build=missing --profile=profiles/<platform>/<profile> -s build_type=Release
 ```
 
 ## In case of using clangd
 
 Make sure in your cmake file you have included:
+
 ```cmake
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 ```
+
 and then in link the compile_commands.json file into the root directory.
 
 ```shell
@@ -27,4 +30,5 @@ ln -s ./build/Release/compile_commands.json
 ```
 
 ## Clang Tidy
+
 TODO
