@@ -1,0 +1,10 @@
+[settings]
+arch=armv8
+build_type=Release
+compiler=gcc
+compiler.cppstd=gnu23
+compiler.libcxx=libstdc++11
+compiler.version=13.2
+os=Macos
+[conf]
+tools.build:compiler_executables={ "c": "/opt/homebrew/bin/gcc-13", "cpp":"/opt/homebrew/bin/g++-13"}

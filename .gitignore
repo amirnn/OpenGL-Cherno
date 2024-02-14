@@ -1,0 +1,10 @@
+.DS_store
+
+build/*
+cmake-build-debug/*
+conan/out/*
+venv
+
+.cache
+ConanPresets.json
+compile_commands.json
