@@ -8,6 +8,7 @@ add_executable(cherno
 target_link_libraries(
     cherno
     glm::glm
+    Eigen3::Eigen
     glfw
     ${GLAD_LIBRARY_NAME}
 )

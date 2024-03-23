@@ -4,17 +4,19 @@
 //#define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
 
-
-
-
-
 #include <glm/glm.hpp>
+
+#include <Eigen/Eigen>
 
 #include <stdlib.h>
 #include <stddef.h>
 #include <stdio.h>
 
-using namespace glm;
+//using namespace glm;
+using namespace Eigen;
+
+using vec2 = Eigen::Vector2f;
+using vec3 = Eigen::Vector3f;
 
 typedef struct Vertex {
     vec2 pos;
@@ -56,6 +58,23 @@ static void error_callback(int error, const char *description) {
 static void key_callback(GLFWwindow *window, int key, int scancode, int action, int mods) {
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
         glfwSetWindowShouldClose(window, GLFW_TRUE);
+}
+
+void mat4x4_ortho(Eigen::Matrix4f M, float l, float r, float b, float t, float n, float f)
+{
+    M(0,0) = 2.f/(r-l);
+    M(0,1) = M(0, 2) = M(0,3) = 0.f;
+
+    M(1,1) = 2.f/(t-b);
+    M(1,0) = M(1,2) = M(1,3) = 0.f;
+
+    M(2,2) = -2.f/(f-n);
+    M(2,0) = M(2,1) = M(2,3) = 0.f;
+
+    M(3,0) = -(r+l)/(r-l);
+    M(3,1) = -(t+b)/(t-b);
+    M(3,2) = -(f+n)/(f-n);
+    M(3,3) = 1.f;
 }
 
 int main(void) {
@@ -124,14 +143,26 @@ int main(void) {
         glViewport(0, 0, width, height);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        mat4x4 m, p, mvp;
-        m = glm::mat4();
-        mvp = glm::mat4();
+        // mat4x4 m, p, mvp;
+        Eigen::Matrix4f m, p, mvp;
+        m.setIdentity();
+        p.setIdentity();
+        mvp.setIdentity();
+
+        const auto t = static_cast<float>(glfwGetTime());
+        Eigen::Matrix4f rotation {
+                {cos(t), sin(t), 1.0f, 0.0f},
+                {-sin(t), cos(t), 1.0f, 0.0f},
+                {0.0f, 0.0f, 1.0f, 0.0f},
+                {0.0f,0.0f,0.0f,1.0f}
+        };
+
+        m = rotation * m;
 
 //        mat4x4_rotate_Z(m, m, (float) glfwGetTime());
-//        mat4x4_ortho(p, -ratio, ratio, -1.f, 1.f, 1.f, -1.f);
+        mat4x4_ortho(p, -ratio, ratio, -1.f, 1.f, 1.f, -1.f);
 //
-//        mvp = p * m;
+        mvp = p * m;
 //        mat4x4_mul(mvp, p, m);
 
         glUseProgram(program);

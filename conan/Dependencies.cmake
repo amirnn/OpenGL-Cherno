@@ -13,6 +13,9 @@ include_directories()
 find_package(glm REQUIRED)
 include_directories(${glm_INCLUDE_DIRS})
 
+find_package(Eigen3 REQUIRED)
+include_directories(${Eigen3_INCLUDE_DIRS})
+
 # Specify glad settings
 # Look at GladConfig.cmake file for better understanding
 if(APPLE)
