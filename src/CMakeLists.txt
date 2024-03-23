@@ -1,9 +1,16 @@
 # SRC
 
-add_executable(opengl-cherno 
-    ${CMAKE_SOURCE_DIR}/src/opengl-cherno.cpp 
+add_executable(cherno 
+    ${CMAKE_SOURCE_DIR}/src/cherno.cpp 
     ${CMAKE_SOURCE_DIR}/src/main.cpp
     )
+
+target_link_libraries(
+    cherno
+    glm::glm
+    glfw
+    ${GLAD_LIBRARY_NAME}
+)
 
 # install(TARGETS opengl-cherno DESTINATION "."
 #         RUNTIME DESTINATION bin
