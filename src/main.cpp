@@ -11,6 +11,7 @@
 #include <stdlib.h>
 #include <stddef.h>
 #include <stdio.h>
+#include <iostream>
 
 //using namespace glm;
 using namespace Eigen;
@@ -99,6 +100,9 @@ int main(void) {
 
     int version = gladLoadGL(glfwGetProcAddress);
     printf("GL %d.%d\n", GLAD_VERSION_MAJOR(version), GLAD_VERSION_MINOR(version));
+
+    std::cout << glGetString(GL_VERSION) << std::endl;
+
     glfwSwapInterval(1);
 
     // NOTE: OpenGL error checks have been omitted for brevity
@@ -163,6 +167,7 @@ int main(void) {
         mat4x4_ortho(p, -ratio, ratio, -1.f, 1.f, 1.f, -1.f);
 //
         mvp = p * m;
+        mvp.data();
 //        mat4x4_mul(mvp, p, m);
 
         glUseProgram(program);
