@@ -1,7 +1,8 @@
 #pragma once
+#include <vector>
 
 #include "../Shader/Shader.hpp"
-#include <vector>
+
 
 namespace cherno
 {
@@ -13,6 +14,8 @@ public:
 
     auto GetId() const noexcept -> uint { return m_id;}
     auto IsValid() const noexcept -> bool {return m_isValid;}
+
+    ~Program();
     
 private:
   Shader m_vertexShader;

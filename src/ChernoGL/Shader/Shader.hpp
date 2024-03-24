@@ -25,7 +25,7 @@ public:
 
   auto IsValid() const noexcept -> bool { return m_isValid;}
 
-  void DeleteShaderProgram();
+  ~Shader();
 
 private:
   std::string m_source;

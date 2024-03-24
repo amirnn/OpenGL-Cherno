@@ -1,6 +1,9 @@
 #include "Program.hpp"
-#include "glad/gl.h"
+
+#include <glad/gl.h>
 #include <utility>
+
+#include "../../Utils/GLCall.hpp"
 
 namespace cherno {
 
@@ -90,9 +93,11 @@ m_vertexShader{}
 
 void Program::CompileProgram()
 {
-    glAttachShader(m_id, m_vertexShader.GetId());
-    glAttachShader(m_id, m_fragmentShader.GetId());
-    glLinkProgram(m_id);
+    GLCall(glAttachShader(m_id, m_vertexShader.GetId()));
+    GLCall(glAttachShader(m_id, m_fragmentShader.GetId()));
+    GLCall(glLinkProgram(m_id));
 }
+
+Program::~Program() { GLCall(glDeleteProgram(m_id));}
 
 } // namespace cherno

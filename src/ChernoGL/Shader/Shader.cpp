@@ -2,13 +2,11 @@
 #include "glad/gl.h"
 
 #include <cassert>
-#include <climits>
-#include <cstdio>
-#include <filesystem>
 #include <fstream>
 #include <string>
 #include <sstream>
 
+#include "../../Utils/GLCall.hpp"
 
 namespace cherno {
 
@@ -81,12 +79,12 @@ Shader::Shader(Type type, std::string const& src)
     }
     if (enum_type != 0)
     {
-        m_id = glCreateShader(enum_type);
+        GLCall(m_id = glCreateShader(enum_type));
         m_source = src;
         m_source_ptr = m_source.c_str();
 
-        glShaderSource(m_id, 1, &m_source_ptr, nullptr);
-        glCompileShader(m_id);
+        GLCall(glShaderSource(m_id, 1, &m_source_ptr, nullptr));
+        GLCall(glCompileShader(m_id));
 
         m_isValid = true;
     }
@@ -98,4 +96,7 @@ Shader::Shader(Type type, std::string const& src)
         m_isValid = false;
     }
 }
+
+Shader::~Shader() {GLCall(glDeleteShader(m_id));}
+
 }
