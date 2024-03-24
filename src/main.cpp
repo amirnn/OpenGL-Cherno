@@ -1,4 +1,4 @@
-#include "GLProgram.hpp"
+#include "GLProgram/GLProgram.hpp"
 
 int main( int argc, char const * argv[]) 
 {

@@ -12,8 +12,7 @@
 #include <stdlib.h>
 
 #include "GLProgram.hpp"
-#include "OpenGL/Program/Program.hpp"
-#include "OpenGL/Vertex/Vertex.hpp"
+#include "../ChernoGL/Vertex/Vertex.hpp"
 
 namespace cherno {
 
@@ -92,25 +91,32 @@ void GLProgram::Init() {
   glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);
   glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-  Shader vertexShader =
-      Shader::CreateShaderFromSourceFile("src/Shaders/vertex.shader").value();
+  // auto opt = Shader::CreateShaderFromSourceFile("src/Shaders/vertex.shader");
+  auto opt = Shader::CreateShaderFromSourceFile("/Users/amirnourinia/Developer/cpp/OpenGL-Cherno/src/Shaders/vertex.shader");
+
+  if ( not opt.has_value())
+  {
+    std::cout << "Something went wrong!";
+  }
+  Shader vertexShader = opt.value();
+      // Shader::CreateShaderFromSourceFile("src/Shaders/vertex.shader").value();
   Shader fragmentShader =
-      Shader::CreateShaderFromSourceFile("src/Shaders/fragment.shader").value();
+      Shader::CreateShaderFromSourceFile("/Users/amirnourinia/Developer/cpp/OpenGL-Cherno/src/Shaders/fragment.shader").value();
+      // Shader::CreateShaderFromSourceFile("src/Shaders/fragment.shader").value();
       m_state.programPtr = std::make_shared<Program>(std::vector<Shader>{vertexShader, fragmentShader});
 
-  const GLint mvp_location = glGetUniformLocation(m_state.programPtr->GetId(), "MVP");
+  m_state.mvpLocation = glGetUniformLocation(m_state.programPtr->GetId(), "MVP");
   const GLint vpos_location = glGetAttribLocation(m_state.programPtr->GetId(), "vPos");
   const GLint vcol_location = glGetAttribLocation(m_state.programPtr->GetId(), "vCol");
 
-  GLuint vertex_array;
-  glGenVertexArrays(1, &vertex_array);
-  glBindVertexArray(vertex_array);
+  glGenVertexArrays(1, &m_state.vertexArray);
+  glBindVertexArray(m_state.vertexArray);
   glEnableVertexAttribArray(vpos_location);
-  glVertexAttribPointer(vpos_location, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex),
-                        (void *)offsetof(Vertex, pos));
+  glVertexAttribPointer(vpos_location, 2, GL_FLOAT, GL_FALSE, sizeof(vertex::Vertex),
+                        (void *)offsetof(vertex::Vertex, pos));
   glEnableVertexAttribArray(vcol_location);
-  glVertexAttribPointer(vcol_location, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex),
-                        (void *)offsetof(Vertex, col));
+  glVertexAttribPointer(vcol_location, 3, GL_FLOAT, GL_FALSE, sizeof(vertex::Vertex),
+                        (void *)offsetof(vertex::Vertex, col));
 }
 
 void GLProgram::MainLoop() {
@@ -145,8 +151,8 @@ void GLProgram::MainLoop() {
     //        mat4x4_mul(mvp, p, m);
 
     glUseProgram(m_state.programPtr->GetId());
-    glUniformMatrix4fv(mvp_location, 1, GL_FALSE, (const GLfloat *)&mvp);
-    glBindVertexArray(vertex_array);
+    glUniformMatrix4fv(m_state.mvpLocation, 1, GL_FALSE, (const GLfloat *)&mvp);
+    glBindVertexArray(m_state.vertexArray);
     glDrawArrays(GL_TRIANGLES, 0, 3);
 
     glfwSwapBuffers(window);

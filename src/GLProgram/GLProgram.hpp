@@ -5,9 +5,9 @@
 #define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
 
-#include "OpenGL/Program/Program.hpp"
+#include "../ChernoGL//Program/Program.hpp"
 
-#include "ProgramInterface/ProgramInterface.hpp"
+#include "../ProgramInterface/ProgramInterface.hpp"
 
 namespace cherno
 {
@@ -20,8 +20,10 @@ namespace cherno
 
         struct SharedState
         {
-            GLFWwindow *window;
+            GLFWwindow *window{nullptr};
             std::shared_ptr<Program> programPtr;
+            uint vertexArray{};
+            uint mvpLocation{};
         };
 
         private:

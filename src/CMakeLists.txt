@@ -1,9 +1,9 @@
 # SRC
 
 add_executable(cherno
-
-    ${CMAKE_SOURCE_DIR}/src/OpenGL/Program/Program.cpp
-    ${CMAKE_SOURCE_DIR}/src/OpenGL/Shader/Shader.cpp
+    ${CMAKE_SOURCE_DIR}/src/GLProgram/GLProgram.cpp
+    ${CMAKE_SOURCE_DIR}/src/ChernoGL/Program/Program.cpp
+    ${CMAKE_SOURCE_DIR}/src/ChernoGL/Shader/Shader.cpp
     ${CMAKE_SOURCE_DIR}/src/cherno.cpp 
     ${CMAKE_SOURCE_DIR}/src/main.cpp
     )
