@@ -7,12 +7,13 @@
 
 #include <iostream>
 #include <memory>
-#include <stddef.h>
-#include <stdio.h>
-#include <stdlib.h>
+#include <cstddef>
+#include <cstdio>
+#include <cstdlib>
 
 #include "GLProgram.hpp"
 #include "../ChernoGL/Vertex/Vertex.hpp"
+#include "../Utils/GLCall.hpp"
 
 namespace cherno {
 
@@ -153,7 +154,7 @@ void GLProgram::MainLoop() {
     glUseProgram(m_state.programPtr->GetId());
     glUniformMatrix4fv(m_state.mvpLocation, 1, GL_FALSE, (const GLfloat *)&mvp);
     glBindVertexArray(m_state.vertexArray);
-    glDrawArrays(GL_TRIANGLES, 0, 3);
+    GLCall(glDrawArrays(GL_TRIANGLES, 0, 3));
 
     glfwSwapBuffers(window);
     glfwPollEvents();
