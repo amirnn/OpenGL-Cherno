@@ -3,6 +3,8 @@
 #include <sys/types.h>
 #include <glad/gl.h>
 
+#include <fstream>
+
 #if defined(WIN32)
 #define ASSERT(x) if (!(x)) __debugbreak();
 #else
@@ -17,3 +19,7 @@
 void GLClearError();
 
 bool GLLogCall(char const* function, char const* file, int line);
+
+extern std::ifstream GlHeader;
+
+char const * GLEnumToString(uint enum);

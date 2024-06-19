@@ -51,8 +51,7 @@ static void mat4x4_ortho(Eigen::Matrix4f M, float l, float r, float b, float t,
 void GLProgram::Init() {
   glfwSetErrorCallback(error_callback);
 
-  if (!glfwInit())
-    exit(EXIT_FAILURE);
+  if (!glfwInit()) exit(EXIT_FAILURE);
 
 #if defined(APPLE_SYSTEM)
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);

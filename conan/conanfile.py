@@ -44,6 +44,6 @@ class opengl_chernoRecipe(ConanFile):
         self.requires("glfw/[~3]")
         self.requires("glm/cci.20230113")
         self.requires("eigen/[~3]")
-        self.requires("opencv/[~4]")
+        # self.requires("opencv/[~4]")
 
     

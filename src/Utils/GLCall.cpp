@@ -2,6 +2,8 @@
 
 #include "GLCall.hpp"
 
+std::ifstream GlHeader{};
+
 void GLClearError()
 {
   while (glGetError() != GL_NO_ERROR);
