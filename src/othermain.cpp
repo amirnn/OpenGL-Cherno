@@ -91,7 +91,10 @@ GLFWwindow* gWindow = nullptr;
 GLuint gProgram = 0;
 bool gShouldQuit = false;
 
+GLfloat gRotationSpeed {1.0f};
+
 GLuint g_vertex_array = 0;
+GLuint g_vertex_buffer = 0;
 GLint g_mvp_location = 0;
 GLint g_vpos_location = 0;
 GLint g_vcol_location = 0;
@@ -107,7 +110,24 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action,
                          int mods)
 {
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
+    {
         glfwSetWindowShouldClose(window, GLFW_TRUE);
+    }
+
+    if (key == GLFW_KEY_UP && (action == GLFW_REPEAT || action ==GLFW_PRESS))
+    {
+        gRotationSpeed += 0.2f;
+        std::cout << "value of rotation speed: " << gRotationSpeed << std::endl;
+    }
+
+
+    if (key == GLFW_KEY_DOWN && (action == GLFW_REPEAT || action ==GLFW_PRESS))
+    {
+        gRotationSpeed -= 0.2f;
+        std::cout << "value of rotation speed: " << gRotationSpeed << std::endl;
+    }
+
+
 }
 
 void InitializeProgram()
@@ -163,9 +183,8 @@ void VertexSpecification()
                                        {{0.f, 0.6f}, {0.f, 0.f, 1.f}}};
 
     // Genereate a Vertex Buffer Object
-    GLuint vertex_buffer;
-    glGenBuffers(1, &vertex_buffer);
-    glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);
+    glGenBuffers(1, &g_vertex_buffer);
+    glBindBuffer(GL_ARRAY_BUFFER, g_vertex_buffer);
     // provide the buffer data
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
     glCheckError();
@@ -261,7 +280,7 @@ void PreDraw()
 
     Matrix4f m{}, p{}, mvp{};
     m = Matrix4f::Identity();
-    auto const rotated = mat4f_rotate_z(m, static_cast<float>(glfwGetTime()));
+    auto const rotated = mat4f_rotate_z(m, static_cast<float>( gRotationSpeed * glfwGetTime()));
     p = mat4f_ortho(p, -ratio, ratio, -1.f, 1.f, 1.f, -1.f);
     mvp = p * rotated;
     // mvp = Matrix4f::Identity();
@@ -280,6 +299,8 @@ void PreDraw()
 
     // Bind the vertex array
     glBindVertexArray(g_vertex_array);
+    // Bind the data
+    glBindBuffer(GL_ARRAY_BUFFER, g_vertex_buffer);
     glCheckError();
 }
 
@@ -289,16 +310,19 @@ void Draw()
     glCheckError();
     glfwSwapBuffers(gWindow);
     glCheckError();
+    glUseProgram(0);
+    glCheckError();
 }
 
 void GetEvents()
 {
+    glfwPollEvents();
     gShouldQuit = glfwWindowShouldClose(gWindow);
     if (gShouldQuit)
     {
         std::cout << "Quitting Application!"s << std::endl;
     }
-    glfwPollEvents();
+
 }
 
 void MainLoop()
